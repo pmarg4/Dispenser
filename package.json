@@ -1,0 +1,19 @@
+{
+  "name": "dispenser",
+  "version": "0.1.0",
+  "description": "Dispenser TR",
+  "main": "app.js",
+  "scripts": {
+    "test": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pmarg4/Dispenser.git"
+  },
+  "author": "Pau Amargant Alvarez",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pmarg4/Dispenser/issues"
+  },
+  "homepage": "https://github.com/pmarg4/Dispenser#readme"
+}
