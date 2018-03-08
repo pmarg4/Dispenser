@@ -10,3 +10,15 @@ body{
 #element1{
 
 }
+.intro{
+  border-style: solid;
+  border-radius: 3px;
+  padding:1em;
+  margin-bottom:1.5em;
+}
+.horari{
+  border-style: solid;
+  border-radius: 3px;
+  padding:1em;
+  margin-bottom:1.5em;
+}

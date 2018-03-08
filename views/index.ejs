@@ -1,53 +1,76 @@
 <%- include partials/header.ejs %>
-<link rel="stylesheet" type="text/css" href="style.css">
-
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <script src="js.js"></script>
   <div class="ui large top   menu" id="menu">
-  <a class="active item">
+    <a class="active item">
     Home
   </a>
-  <a class="item">
+    <a class="item">
     Messages
   </a>
-  <a class="item">
+    <a class="item">
     Friends
   </a>
-  <div class="right menu">
-    <div class="item">
-      <div class="ui icon input">
-        <input type="text" placeholder="Search...">
-        <i class="search link icon"></i>
+    <div class="right menu">
+      <div class="item">
+        <div class="ui icon input">
+          <input type="text" placeholder="Search...">
+          <i class="search link icon"></i>
+        </div>
       </div>
-    </div>
-    <a class="ui item">
+      <a class="ui item">
       Logout
     </a>
+    </div>
   </div>
-</div>
-<div class="ui inverted vertical masthead center aligned segment">
-<div class="ui text container">
-  <h1 class="ui inverted header">
+  <div class="ui inverted vertical masthead center aligned segment">
+    <div class="ui text container">
+      <h1 class="ui inverted header">
     Dispensador Intel·ligent
   </h1>
-  <h3 class="ui">
+      <h3 class="ui">
     La solució definitiva pel control de medicaments
   </h3>
-</div>
-</div>
-<div class="ui four column grid container">
-<div class="row">
-<div class="column" id="element1">
-<h1 class="ui">Title HERE</h1>
-<br>
-jodksñd askld salkjñasdkljñsd akjlasdkjld sakjladskljñ dakjldasñk ljad
-</div>
-<div class="column" id="element1"><h1 class="ui">Title HERE</h1>
-<br>
-jodksñdas kldsalkj ñasdk ljñsdakjlasdkjldsa kjladskljñdak jldasñkljad</div>
-<div class="column" id="element1"><h1 class="ui">Title HERE</h1>
-<br>
-jodksñdaskl dsalkjñ asdkljñsda  kjlasdk jldsakjlad skljñda kj ldasñ kljad</div>
-<div class="column" id="element1"><h1 class="ui">Title HERE</h1>
-<br>
-jodksñdas kldsalkj ñasdk ljñsdakjlasdkjldsa kjladskljñdak jldasñkljad</div>
-</div>
-</div>
+    </div>
+  </div>
+  <div class="ui four column grid container">
+    <div class="row">
+      <div class="column" id="element1">
+        <h1 class="ui">Title HERE</h1>
+        <br> jodksñd askld salkjñasdkljñsd akjlasdkjld sakjladskljñ dakjldasñk ljad
+      </div>
+      <div class="column" id="element1">
+        <h1 class="ui">Title HERE</h1>
+        <br> jodksñdas kldsalkj ñasdk ljñsdakjlasdkjldsa kjladskljñdak jldasñkljad</div>
+      <div class="column" id="element1">
+        <h1 class="ui">Title HERE</h1>
+        <br> jodksñdaskl dsalkjñ asdkljñsda kjlasdk jldsakjlad skljñda kj ldasñ kljad</div>
+      <div class="column" id="element1">
+        <h1 class="ui">Title HERE</h1>
+        <br> jodksñdas kldsalkj ñasdk ljñsdakjlasdkjldsa kjladskljñdak jldasñkljad</div>
+    </div>
+  </div>
+
+  <h1>MENU SELECCIO</h1>
+
+  <form action="/add/schema"method="post" class="ui form">
+    <div class="ui four column grid horari">
+      <div class="row">
+        <div class="column" id="1" dia="Monday">
+          <button type="button" class="ui button setm">Afegir</button>
+        </div>
+        <div class="column" id="2" dia="2">
+          <button type="button" class="ui button setm">Afegir</button>
+        </div>
+        <div class="column" id="3" dia="3">
+          <button type="button" class="ui button setm">Afegir</button>
+        </div>
+        <div class="column" id="4" dia="4">
+          <button type="button" class="ui button setm">Afegir</button>
+        </div>
+      </div>
+    </div>
+    <input type="submit" value="Submit">
+  </form>
+
+  <button id="boto">dasda</button> dsdsddd
