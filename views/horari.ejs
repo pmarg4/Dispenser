@@ -1,0 +1,58 @@
+<%- include partials/header.ejs %>
+
+<div class="row container ">
+  <div class="col-sm card horari" dia="1">
+    <ul class="list-group">
+    <h6 class="card-title">Dilluns
+      <button type="button" class="btn btn-default btn-sm setm" aria-label="Left Align"><i class="fas fa-plus light"></i></button>
+    </h6>
+<% monday[1].hour.forEach(function(monday){ %>
+  <%= monday  %>
+
+<% }) %>
+
+
+
+  </ul>
+  </div>
+
+  <div class="col-sm card horari" dia="2">
+    <ul class="list-group">
+    <h6 class="card-title">Dimarts
+      <button type="button" class="btn btn-default btn-sm setm" aria-label="Left Align"><i class="fas fa-plus light"></i></button>
+    </h6>
+    <% monday[2].hour.forEach(function(monday){ %>
+      <%= monday  %>
+
+    <% }) %>
+  </ul>
+  </div>
+
+  <div class="col-sm card horari" dia="3">
+    <ul class="list-group">
+    <h6 class="card-title">Dimecres
+      <button type="button" class="btn btn-default btn-sm setm" aria-label="Left Align"><i class="fas fa-plus light"></i></button>
+    </h6>
+
+  </ul>
+  </div>
+
+  <div class="col-sm card horari" dia="4">
+    <ul class="list-group">
+    <h6 class="card-title">Dijous
+      <button type="button" class="btn btn-default btn-sm setm" aria-label="Left Align"><i class="fas fa-plus light"></i></button>
+    </h6>
+
+  </ul>
+  </div>
+
+  <div class="col-sm card horari" dia="5">
+    <ul class="list-group">
+    <h6 class="card-title">Divendres
+      <button type="button" class="btn btn-default btn-sm setm" aria-label="Left Align"><i class="fas fa-plus light"></i></button>
+    </h6>
+
+  </ul>
+  </div>
+  </div>
+</div>

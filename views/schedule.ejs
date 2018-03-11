@@ -1,0 +1,61 @@
+<%- include partials/header.ejs %>
+  <br>
+  <br>
+  <div class="container">
+
+  <h3> Configuració de l'horari </h1>
+
+<div>Queden disponibles:   <span class="badge badge-secondary" id="contador">21</span></h1></div>
+    <form class="form" method="post" action="/add/schema">
+        <div class="form-group">
+        <div class="row container ">
+          <div class="col-sm card horari" dia="1">
+            <ul class="list-group">
+            <h6 class="card-title">Dilluns
+              <button type="button" class="btn btn-default btn-sm setm" aria-label="Left Align"><i class="fas fa-plus light"></i></button>
+            </h6>
+
+          </ul>
+          </div>
+
+          <div class="col-sm card horari" dia="2">
+            <ul class="list-group">
+            <h6 class="card-title">Dimarts
+              <button type="button" class="btn btn-default btn-sm setm" aria-label="Left Align"><i class="fas fa-plus light"></i></button>
+            </h6>
+
+          </ul>
+          </div>
+
+          <div class="col-sm card horari" dia="3">
+            <ul class="list-group">
+            <h6 class="card-title">Dimecres
+              <button type="button" class="btn btn-default btn-sm setm" aria-label="Left Align"><i class="fas fa-plus light"></i></button>
+            </h6>
+
+          </ul>
+          </div>
+
+          <div class="col-sm card horari" dia="4">
+            <ul class="list-group">
+            <h6 class="card-title">Dijous
+              <button type="button" class="btn btn-default btn-sm setm" aria-label="Left Align"><i class="fas fa-plus light"></i></button>
+            </h6>
+
+          </ul>
+          </div>
+
+          <div class="col-sm card horari" dia="5">
+            <ul class="list-group">
+            <h6 class="card-title">Divendres
+              <button type="button" class="btn btn-default btn-sm setm" aria-label="Left Align"><i class="fas fa-plus light"></i></button>
+            </h6>
+
+          </ul>
+          </div>
+          </div>
+        </div>
+        <input type="submit" class="btn btn-primary" value="Submit">
+
+  </form>
+</div>
