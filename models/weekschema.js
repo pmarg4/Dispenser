@@ -1,18 +1,22 @@
 var mongoose = require("mongoose");
 var weekschema = new mongoose.Schema({
         1:{
-          hour: []
+          hour: [],
+          description: String
         },
         2:{
-          hour: []
+          hour: [],
+          description: String
 
         },
         3:{
-          hour: []
+          hour: [],
+          description: String
 
         },
         4:{
-          hour: []
+          hour: [],
+          description: String
 
         }
         // 5:{

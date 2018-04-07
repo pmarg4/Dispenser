@@ -42,3 +42,12 @@ body{
 .badge{
   vertical-align:middle;
 }
+.column1{
+padding:2em;
+margin-right: 2em;
+margin-top: 2em;
+}
+#content1{
+  padding-left: 6em;
+  padding-right: 6em;
+}
