@@ -1,0 +1,19 @@
+<%- include partials/header2.ejs %>
+  <br>
+  <br>
+  <div class="container">
+
+
+
+    <% docs.forEach(function(doc){ %>
+      <% if(doc.taken){ %>
+  <li class="list-group-item">
+  <%= doc.date1 %>
+        </li>
+
+        <% }else{ %>
+          <li class="list-group-item">
+          <%=  doc.date1   %> <span class="badge badge-danger">Alerta</span> %>
+</li>
+
+      <% }}) %>
