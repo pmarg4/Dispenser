@@ -1,8 +1,11 @@
 var mongoose = require("mongoose");
 var alert = new mongoose.Schema({
-        alert: {type:Boolean,default:true},
+        alerta: {type:Boolean,default:true},
         hour: Number,
-        deactivated:{type:Boolean,default:false}
+        day: Number,
+        month: Number,
+        deactivated:{type:Boolean,default:false},
+        hours: {type:Number,default:0}
       })
 
 

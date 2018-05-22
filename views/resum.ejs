@@ -2,18 +2,88 @@
   <br>
   <br>
   <div class="container">
+    <div class="row">
+    <div class="row">
+      <div class="col-md-4">
+        <h1>Registre</h1>
+      </div>
+    </div class="row">
+
+    <div class="row">
+
+      <div class="col-md-4">
+        <div class="panel panel-default" id="configuracio" style="height:4em;">
+          <div class="panel-body">
+            Configuració <i class="fa fa-cog fa-2x" aria-hidden="true" style="float:right"></i>
+
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="panel panel-default" id="horari" style="height:4em;">
+          <div class="panel-body">
+            <i class="fa fa-calendar fa-2x" aria-hidden="true" style="float:right"></i> Horari
+            </i>
+
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="panel panel-default" id="alerta" style="height:4em;">
+          <div class="panel-body">
+            <i class="fa fa-exclamation-triangle fa-2x" aria-hidden="true" style="float:right"></i> Alertes
+            </i>
+
+          </div>
+        </div>
+      </div>
+    </div>
 
 
 
-    <% docs.forEach(function(doc){ %>
-      <% if(doc.taken){ %>
-  <li class="list-group-item">
-  <%= doc.date1 %>
-        </li>
 
-        <% }else{ %>
+
+    </div>
+    <div class="row">
+
+
+      <% docs.forEach(function(doc){ %>
+        <% if(doc.taken){ %>
+
           <li class="list-group-item">
-          <%=  doc.date1   %> <span class="badge badge-danger">Alerta</span> %>
-</li>
+            <div class="row" id="<%=doc.id %>">
+              <div class="data1 col-md-5">
+                <%= doc.date1.day %> /
+                  <%= doc.date1.month %>&nbsp; &nbsp;
+                    <%= doc.date1.hour %> hores
 
-      <% }}) %>
+              </div>
+
+            </div>
+          </li>
+          <% }else{ %>
+            <li class="list-group-item">
+              <div class="row" id="<%=doc.id %>">
+                <div class="data1 col-md-5">
+                  <%= doc.date1.day %> /
+                    <%= doc.date1.month %> &nbsp;&nbsp;
+                      <%= doc.date1.hour %> hores
+
+                </div>
+                <div class="data2 col-md-5">
+                  No s'han agafat els medicaments
+                </div>
+                <div class="col-md-1" style="float:right;margin-right:1em;">
+                  <span class="badge badge-danger alerta">Alerta</span>
+                </div>
+              </div>
+            </li>
+
+
+
+
+            <% }}) %>
+
+    </div>
+
+  </div>

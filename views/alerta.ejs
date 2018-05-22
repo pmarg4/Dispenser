@@ -1,0 +1,46 @@
+<%- include partials/header2.ejs %>
+  <br>
+  <br>
+  <div class="container">
+    <div class="row">
+    <div class="row">
+      <div class="col-md-4">
+        <h1>Registre</h1>
+      </div>
+    </div class="row">
+
+    </div>
+    <div class="row">
+
+
+      <% docs.forEach(function(doc){ %>
+
+        <% if(doc.alerta==true){ %>
+          <form action="/desactivar" method="get">
+          <li class="list-group-item">
+            <div class="row" id="<%=doc.id %>">
+              <div class="data1 col-md-8">
+                Data:  &nbsp;<%= doc.day %>/ <%= doc.month %>  &nbsp; &nbsp;Hora: &nbsp;<%= doc.hour %>   &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;      Hores de medicament passades: <%= doc.hours %>
+              </div>
+              <button type="submit" class="btn" style="display: inline-block;float:right;margin-right:1em;">Basic</button>
+
+            </div>
+          </li>
+        </form>
+          <% }else{ %>
+            <li class="list-group-item">
+              <div class="row" id="<%=doc.id %>">
+                <div class="data1 col-md-8">
+                  Data:  &nbsp;<%= doc.day %>/ <%= doc.month %>  &nbsp; &nbsp;Hora: &nbsp;<%= doc.hour %>  &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;      Hores de medicament passades: <%= doc.hours %>
+                </div>
+
+              </div>
+            </li>
+
+
+
+            <% }}) %>
+
+    </div>
+
+  </div>

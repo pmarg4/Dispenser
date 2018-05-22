@@ -1,6 +1,14 @@
 var mongoose = require("mongoose");
 
 var weekschema = new mongoose.Schema({
+        one:{
+          type:Boolean,
+          default:true
+        },
+        alert: {
+          type:Boolean,
+          default:false
+        },
         1:{
           hour: [],
           description: String

@@ -2,7 +2,7 @@
 var express = require('express');
 var app = express();
 var bodyParser = require("body-parser");
-var request = require('request');
+var request = require('then-request');
 var mongoose = require("mongoose");
 var port = 8080;
 var moment = require("moment");
@@ -28,8 +28,7 @@ var pill = require("./models/pill", function(err) {});
 var pillday = require("./models/pillday", function(err) {});
 var savedip = require("./models/savedip", function(err) {});
 var nowpill = require("./models/nowpill", function(err) {});
-var alert = require("./models/alert", function(err) {});
-var emergency = require("./models/emergency", function(err) {});
+var alerta = require("./models/alert", function(err) {});
 
 
 //ROUTES
@@ -39,14 +38,60 @@ app.get("/horari", function(req, res) {
   res.render("schedule.ejs");
 
 })
+app.post("/add/rapid",function(req,res){
+  weekschema.remove().exec();
+
+  console.log(req.body);
+  body = req.body;
+  horari ={hour:[ body[1],body[2],body[3] ]}
+  console.log(horari);
+  // weekschema.create({})
+  // console.log("hola");
+  // weekschema.remove().exec();
+  // var variable;
+  // variable = req.body;
+  // console.log(variable[1]);
+  //
+  weekschema.create({
+    1: horari,
+    2: horari,
+    3: horari,
+    4: horari,
+    5: horari,
+    6: horari,
+    7: horari
+  }, function(err, docs) {
+    if (docs) {
+      console.log(docs);
+    } else {
+      console.log(err);
+
+    }
+  });
+
+  res.redirect("../schedule");
+})
+app.get("/horarirapid", function(req, res) {
+
+  res.render("rapid.ejs");
+
+})
 var user = basicAuth({
     users: { admin: 'admin' },
     challenge: true // <--- needed to actually show the login dialog!
 })
-app.get("/index",user, function(req, res) {
+app.get("/index", function(req, res) {
   bot.telegram.sendMessage("@pilldispenser", "hola");
 
 res.render("index.ejs");
+
+});
+app.get("/schedule", function(req, res) {
+  weekschema.findOne({},function(err,docs){
+
+    res.render("horari.ejs",{docs:docs});
+
+  })
 
 });
 
@@ -81,6 +126,12 @@ app.get("/home", function(req, res) {
   functions.CheckSchedule();
   res.render("index")
 });
+app.get("/alerta",function(req,res){
+  alerta.find({}).sort({"month":1,"day":1,"hour":1}).exec(function(err,docs){
+    res.render("alerta.ejs",{docs:docs});
+    console.log(docs);
+  })
+});
 // tard = true;
 // var alerta = functions.CheckPastilla(tard,function(callback){
 //   console.log(callback);
@@ -96,20 +147,33 @@ app.get("/arduino", function(req, res) {
   functions.pastilla();
 
 
+
 });
 
-app.get("/inici",function(req,res){
-  pillday.find({},function(err,docs){
-    var dates = [];
-    docs.forEach(function(doc){
-      var localDate = moment(doc.date).utcOffset(2 * 60); //set timezone offset in minutes
-      console.log(localDate.format()); //2015-01-30T20:00:00+10:00
-
-      dates.push(localDate);
-    })
-    console.log(dates);
+app.get("/inici",user,function(req,res){
+  pillday.find({}).sort({"date1.month":1,"date1.day":1,"date1.hour":1}).exec(function(err,docs){
+// .sort({"date1.day":-1}).exec(function(err,docs)
+    // docs.sort(function(a,b){
+    //    return a["date1.day"] - b["date1.day"] || a["date1.hour"] - b["date1.hour"];
+    // })ç
+    docs1 = docs.reverse();
+      console.log(docs1);
     res.render("resum.ejs",{docs:docs});
   })
+})
+
+app.get("/desactivar",function(req,res){
+  functions.desactivar();
+  res.redirect("/alerta");
+})
+app.get("/activar",function(err,docs){
+  functions.activar();
+
+
+})
+app.get("/taken",function(err,docs){
+  functions.taken();
+  console.log("Agafat");
 })
 //EXECUCIÓ HORARI CADA Hora
 var j = schedule.scheduleJob({
@@ -119,7 +183,12 @@ var j = schedule.scheduleJob({
   functions.CheckSchedule();
   })
 
-//
+  var f = schedule.scheduleJob({
+    minute: 30
+  }, function() {
+    functions.activar();
+    })
+
 // var CheckSchedule = function(){
 //   var h = moment().hour() + 2;
 //   var wd = moment().isoWeekday();
@@ -142,6 +211,13 @@ var j = schedule.scheduleJob({
 // var tard = true;
 // sendData(90,"83.41.32.227");
 
+//BOT telegram
+// bot.command('/girar', (ctx) => ctx.reply("Quants torns?", (ctx) => ctx.hears('hi', (ctx) => ctx.reply('Hey there'))))
+bot.command('/modern', ({ reply }) => reply('Yo'))
+bot.command('/hipster', Telegraf.reply('λ'))
+bot.command("/girar",(ctx, next) => ctx.reply("Quant",(ctx) => ctx.hearts("d",(ctx) => ctx.reply("hola"))))
+
+bot.startPolling()
 
 app.listen(80, function() {
   console.log(" server is running");

@@ -1,0 +1,52 @@
+<%- include partials/header2.ejs %>
+  <br>
+  <br>
+  <div class="container">
+
+</button>
+  <h3> Configuració de l'horari </h1>  Hi ha disponible l'opció de configurar les mateixes hores tots els dies de la setmana:
+    <button type="button" id="rapid" class="btn btn-default" style="display: inline-block;margin-left:2em;">Configuració ràpida</button>
+<br><br>
+<div>Queden disponibles:   <span class="badge badge-secondary" id="contador">21</span></h1></div>
+    <form class="form" method="post" action="/add/rapid">
+        <div class="form-group">
+        <div class="row container ">
+          <div class="col-sm card horari" hora="1">
+            <ul class="list-group">
+            <h6 class="card-title">Primera Hora
+            </h6>
+            <li class='intro list-group item'><label>Hora</label><input type='text' class='form-control input' name='1'></li>
+
+          </ul>
+          </div>
+
+          <div class="col-sm card horari" hora="2">
+            <ul class="list-group">
+            <h6 class="card-title">Segona hora
+            </h6>
+            <li class='intro list-group item'><label>Hora</label><input type='text' class='form-control input'name='2'></li>
+
+          </ul>
+          </div>
+
+          <div class="col-sm card horari" hora="3">
+            <ul class="list-group">
+            <h6 class="card-title">Tercera hora
+            </h6>
+            <li class='intro list-group item'><label>Hora</label><input type='text' class='form-control input'name='3'></li>
+
+          </ul>
+          </div>
+
+
+
+
+          </div>
+        </div>
+        <input type="submit" class="btn btn-primary" value="Envia">
+
+  </form>
+
+
+
+</div>

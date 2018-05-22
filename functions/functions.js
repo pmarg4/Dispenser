@@ -3,7 +3,7 @@
 var express = require('express');
 var app = express();
 var bodyParser = require("body-parser");
-var request = require('request');
+var request = require('then-request');
 var mongoose = require("mongoose");
 var port = 8080;
 var moment = require("moment");
@@ -28,7 +28,6 @@ var pillday = require("../models/pillday", function(err) {});
 var savedip = require("../models/savedip", function(err) {});
 var nowpill = require("../models/nowpill", function(err) {});
 var alert = require("../models/alert", function(err) {});
-var emergency = require("../models/emergency", function(err) {});
 
 
 //FUNCIONS COM A TALS
@@ -42,10 +41,11 @@ module.exports = {
     pillday.findOneAndUpdate({
       edited: false
     }, {
-      $set: {
-        edited: true
+      "$set": {
+        "edited": true
       }
     }, function(err, docs) {
+      console.log(docs);
       if (tard) {
         bot.telegram.sendMessage("@pilldispenser", "No s'ha prés la pastilla, comprova l'estat de salut");
         var h = moment().hour() + 2;
@@ -80,12 +80,32 @@ module.exports = {
       }
     });
   },
+  taken: function() {
+
+    //Canviem ANTERIORS
+    pillday.findOneAndUpdate({
+      edited: false,
+      taken: false
+    }, {
+      $set: {
+        edited: true,
+        taken: true
+      }
+    }, function(err, docs) {
+      if (err) {
+        console.log("No hi ha pastilles a actualitzar");
+      } else {
+        console.log(docs);
+      }
+    });
+  },
   //
   //
   CheckSchedule: function() {
     var h = moment().hour() + 2;
     var wd = moment().isoWeekday();
     weekschema.findOne({}, function(err, docs) {
+      if(docs.alert == false){
       docs[wd].hour.forEach(function(time) {
         if (time == h) {
 
@@ -97,13 +117,20 @@ module.exports = {
             }}, function(err, docs) {
             console.log(docs);
             console.log(moment().date());
+            request("get","https://dispenser.localtunnel.me/girar/92");
          })
 
         }
         else{
           console.log("No és hora");
-        }
-      })
+        }}
+      )}
+      if(docs.alert == true){
+        console.log("Hi ha una alerta");
+        alert.findOneAndUpdate({alerta:true},{$inc:{hours:1}},function(err,docs){
+          console.log(docs);
+        })
+      }
     })
   },
   sendData: function(ip, steps) {
@@ -112,26 +139,49 @@ module.exports = {
     const req = request(ip, function(err, resp, body) {});
     req.end()
   },
-  deactivateAlert: function(callback) {
-    alert.findOneAndUpdate({
-      deactivated: false
-    }, {
-      $set: {
-        deactivated: true
-      }
-    }, function() {
-      emergency.create({
-        emergency: false
-      }, function(err, docs) {
-        console.log("Emergència desactivada");
-        bot.teleg.sendMessage("@pilldispenser", "S'ha desactivat l'alerta")
-      });
-    })
-  },
+  // alerta: function(al) {
+  //   if(al){
+  //     alert.create({hour:moment().hour()},function(err,docs){
+  //       console.log("alerta creada");
+  //       console.log(docs);
+  //     });
+  //   }else{
+  //     alert.findOneAndUpdate({alerta:true},{$set:{alerta:false,deactivated:true}},function(err,docs){
+  //       console.log(docs);
+  //     })
+  //
+  //   }
+  // },
   pastilla: function(){
-    pillday.findOneAndUpdate({"edited":false},{$set:{taken:true,edited:true}},function(err,docs){
+
+    pillday.findOneAndUpdate({"edited":false},{$set:{taken:true,edited:true,date2: {
+        month: moment().month(),
+        day: moment().date(),
+        hour: moment().hour() + 2
+      }}},function(err,docs){
       console.log(docs);
     })
+
+  },
+  activar: function(){
+    pillday.findOneAndUpdate({edited:false,taken:false},{$set:{edited:true,taken:true}},function(err,docs){
+      if(docs){
+        weekschema.findOneAndUpdate({one:true},{$set:{alert:true}},function(err,docs){
+          console.log("Alerta activada");
+          bot.telegram.sendMessage("@pilldispenser","Alerta Actiada!");
+          alert.create({hour:moment().hour()+2,day:moment().date(),month:moment().month()});
+        })
+
+      }
+    })
+  },
+  desactivar: function(){
+    alert.findOneAndUpdate({alerta:true,deactivated:false},{$set:{deactivated:true,alerta:false}},function(err,docs){
+      console.log(docs);
+    });
+    weekschema.findOneAndUpdate({one:true},{$set:{alert:false}},function(err,docs){
+      console.log(docs);
+    });
 
   }
 };

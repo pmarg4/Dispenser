@@ -4,10 +4,9 @@
   <div class="col-sm card horari" dia="1">
     <ul class="list-group">
     <h6 class="card-title">Dilluns
-      <button type="button" class="btn btn-default btn-sm setm" aria-label="Left Align"><i class="fa fa-plus light"></i></button>
     </h6>
-<% monday[1].hour.forEach(function(monday){ %>
-  <%= monday  %>
+<% docs[1].hour.forEach(function(doc){ %>
+    Hora: &nbsp;<%= doc  %> <br>
 
 <% }) %>
 
@@ -19,11 +18,9 @@
   <div class="col-sm card horari" dia="2">
     <ul class="list-group">
     <h6 class="card-title">Dimarts
-      <button type="button" class="btn btn-default btn-sm setm" aria-label="Left Align"><i class="fas fa-plus light"></i></button>
     </h6>
-    <% monday[2].hour.forEach(function(monday){ %>
-      <%= monday  %>
-
+    <% docs[2].hour.forEach(function(doc){ %>
+Hora: &nbsp;<%= doc  %> <br>
     <% }) %>
   </ul>
   </div>
@@ -31,27 +28,48 @@
   <div class="col-sm card horari" dia="3">
     <ul class="list-group">
     <h6 class="card-title">Dimecres
-      <button type="button" class="btn btn-default btn-sm setm" aria-label="Left Align"><i class="feature-icon fa fa-eur"></i></button>
     </h6>
-
+    <% docs[3].hour.forEach(function(doc){ %>
+Hora: &nbsp;<%= doc  %> <br>
+    <% }) %>
   </ul>
   </div>
 
   <div class="col-sm card horari" dia="4">
     <ul class="list-group">
     <h6 class="card-title">Dijous
-      <button type="button" class="btn btn-default btn-sm setm" aria-label="Left Align"><i class="fas fa-plus light"></i></button>
     </h6>
-
+    <% docs[4].hour.forEach(function(doc){ %>
+Hora: &nbsp;<%= doc  %> <br>
+    <% }) %>
   </ul>
   </div>
 
   <div class="col-sm card horari" dia="5">
     <ul class="list-group">
     <h6 class="card-title">Divendres
-      <button type="button" class="btn btn-default btn-sm setm" aria-label="Left Align"><i class="fas fa-plus light"></i></button>
     </h6>
-
+    <% docs[5].hour.forEach(function(doc){ %>
+Hora: &nbsp;<%= doc  %> <br>
+    <% }) %>
+  </ul>
+  </div>
+  <div class="col-sm card horari" dia="5">
+    <ul class="list-group">
+    <h6 class="card-title">Dissabte
+    </h6>
+    <% docs[6].hour.forEach(function(doc){ %>
+Hora: &nbsp;<%= doc  %> <br>
+    <% }) %>
+  </ul>
+  </div>
+  <div class="col-sm card horari" dia="5">
+    <ul class="list-group">
+    <h6 class="card-title">Diumenge
+    </h6>
+    <% docs[7].hour.forEach(function(doc){ %>
+Hora: &nbsp;<%= doc  %> <br>
+    <% }) %>
   </ul>
   </div>
   </div>
