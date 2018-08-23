@@ -12,6 +12,8 @@ const Telegraf = require('telegraf');
 const bot = new Telegraf("550843373:AAGA-YrH4sdso1tL-6hfS9UAFDJ7V72sMA4");
 var schedule = require('node-schedule');
 var functions = require("./functions/functions.js");
+var pillhora = require("./functions/pilltime.js");
+
 var passport = require('passport');
 const basicAuth = require('express-basic-auth');
 
@@ -19,7 +21,7 @@ const basicAuth = require('express-basic-auth');
 app.set("view engine", "ejs");
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({
-  extended: true
+	extended: true
 }));
 //CONNEXIÓ DB
 mongoose.connect("mongodb://localhost/dispenser")
@@ -28,109 +30,142 @@ var pill = require("./models/pill", function(err) {});
 var pillday = require("./models/pillday", function(err) {});
 var savedip = require("./models/savedip", function(err) {});
 var nowpill = require("./models/nowpill", function(err) {});
-var alerta = require("./models/alert", function(err) {});
+var alert = require("./models/alert", function(err) {});
 
 
 //ROUTES
 
 app.get("/horari", function(req, res) {
 
-  res.render("schedule.ejs");
+	res.render("schedule.ejs");
 
 })
-app.post("/add/rapid",function(req,res){
-  weekschema.remove().exec();
+app.post("/add/rapid", function(req, res) {
+	weekschema.remove().exec();
 
-  console.log(req.body);
-  body = req.body;
-  horari ={hour:[ body[1],body[2],body[3] ]}
-  console.log(horari);
-  // weekschema.create({})
-  // console.log("hola");
-  // weekschema.remove().exec();
-  // var variable;
-  // variable = req.body;
-  // console.log(variable[1]);
-  //
-  weekschema.create({
-    1: horari,
-    2: horari,
-    3: horari,
-    4: horari,
-    5: horari,
-    6: horari,
-    7: horari
-  }, function(err, docs) {
-    if (docs) {
-      console.log(docs);
-    } else {
-      console.log(err);
+	console.log(req.body);
+	body = req.body;
+	horari = {
+		hour: [body[1], body[2], body[3]]
+	}
+	console.log(horari);
+	// weekschema.create({})
+	// console.log("hola");
+	// weekschema.remove().exec();
+	// var variable;
+	// variable = req.body;
+	// console.log(variable[1]);
+	//
+	weekschema.create({
+		1: horari,
+		2: horari,
+		3: horari,
+		4: horari,
+		5: horari,
+		6: horari,
+		7: horari
+	}, function(err, docs) {
+		if (docs) {
+			console.log(docs);
+		} else {
+			console.log(err);
 
-    }
-  });
+		}
+	});
 
-  res.redirect("../schedule");
+	res.redirect("../schedule");
 })
 app.get("/horarirapid", function(req, res) {
 
-  res.render("rapid.ejs");
+	res.render("rapid.ejs");
 
 })
 var user = basicAuth({
-    users: { admin: 'admin' },
-    challenge: true // <--- needed to actually show the login dialog!
+	users: {
+		admin: 'admin'
+	},
+	challenge: true // <--- needed to actually show the login dialog!
 })
 app.get("/index", function(req, res) {
-  bot.telegram.sendMessage("@pilldispenser", "hola");
+	bot.telegram.sendMessage("@pilldispenser", "hola");
 
-res.render("index.ejs");
+	res.render("index.ejs");
 
 });
 app.get("/schedule", function(req, res) {
-  weekschema.findOne({},function(err,docs){
+	weekschema.findOne({}, function(err, docs) {
 
-    res.render("horari.ejs",{docs:docs});
+		res.render("horari.ejs", {
+			docs: docs
+		});
 
-  })
+	})
 
 });
 
 app.post("/add/schema", function(req, res) {
-  console.log("hola");
-  weekschema.remove().exec();
-  var variable;
-  variable = req.body;
-  console.log(variable[1]);
+	console.log("hola");
+	weekschema.remove().exec();
+	var variable;
+	variable = req.body;
+	console.log(variable[1]);
 
-  weekschema.create({
-    1: variable[1],
-    2: variable[2],
-    3: variable[3],
-    4: variable[4],
-    5: variable[5],
-    6: variable[6],
-    7: variable[7]
-  }, function(err, docs) {
-    if (docs) {
-      console.log(docs);
-    } else {
-      console.log(err);
+	weekschema.create({
+		1: variable[1],
+		2: variable[2],
+		3: variable[3],
+		4: variable[4],
+		5: variable[5],
+		6: variable[6],
+		7: variable[7]
+	}, function(err, docs) {
+		if (docs) {
+			console.log(docs);
+		} else {
+			console.log(err);
 
-    }
-  });
+		}
+	});
 
-  res.redirect("../index");
+	res.redirect("../index");
 })
-app.get("/home", function(req, res) {
-  functions.pillday();
-  functions.CheckSchedule();
-  res.render("index")
+app.get("/prova", function(req, res) {
+	async function test() {
+		var hora = await pillhora.getTime();
+		console.log(hora);
+		var alerta = await pillhora.CheckAlert();
+		console.log(alerta);
+		if (!alerta) {
+			console.log("dsa");
+			var comprovar = await pillhora.CheckSchedule(hora);
+			// console.log(comprovar);
+			if (comprovar) {
+				console.log("dds");
+				pillhora.pillupdate();
+				pillhora.create();
+				// pillhora.girar(92);
+				// }
+			}
+			// functions.pillday();
+			// functions.CheckSchedule();
+			res.render("index")
+		}
+	}
+	text();
 });
-app.get("/alerta",function(req,res){
-  alerta.find({}).sort({"month":1,"day":1,"hour":1}).exec(function(err,docs){
-    res.render("alerta.ejs",{docs:docs});
-    console.log(docs);
-  })
+//
+
+app.get("/alerta", function(req, res) {
+	alert.find({}).sort({
+		"month": 1,
+		"day": 1,
+		"hour": 1
+	}).exec(function(err, docs) {
+		res.render("alerta.ejs", {
+			docs: docs
+		});
+		console.log(docs);
+	})
 });
 // tard = true;
 // var alerta = functions.CheckPastilla(tard,function(callback){
@@ -139,55 +174,66 @@ app.get("/alerta",function(req,res){
 
 app.get("/arduino", function(req, res) {
 
-  ip = req.ip.split(":");
+	ip = req.ip.split(":");
 
-  savedip.create({
-    ip: ip[3]
-  });
-  functions.pastilla();
+	savedip.create({
+		ip: ip[3]
+	});
+	functions.pastilla();
 
 
 
 });
 
-app.get("/inici",user,function(req,res){
-  pillday.find({}).sort({"date1.month":1,"date1.day":1,"date1.hour":1}).exec(function(err,docs){
-// .sort({"date1.day":-1}).exec(function(err,docs)
-    // docs.sort(function(a,b){
-    //    return a["date1.day"] - b["date1.day"] || a["date1.hour"] - b["date1.hour"];
-    // })ç
-    docs1 = docs.reverse();
-      console.log(docs1);
-    res.render("resum.ejs",{docs:docs});
-  })
+app.get("/inici", user, function(req, res) {
+	pillday.find({}).sort({
+		"date1.month": 1,
+		"date1.day": 1,
+		"date1.hour": 1
+	}).exec(function(err, docs) {
+		// .sort({"date1.day":-1}).exec(function(err,docs)
+		// docs.sort(function(a,b){
+		//    return a["date1.day"] - b["date1.day"] || a["date1.hour"] - b["date1.hour"];
+		// })ç
+		docs1 = docs.reverse();
+		console.log(docs1);
+		res.render("resum.ejs", {
+			docs: docs
+		});
+	})
 })
 
-app.get("/desactivar",function(req,res){
-  functions.desactivar();
-  res.redirect("/alerta");
-})
-app.get("/activar",function(err,docs){
-  functions.activar();
+app.get("/desactivar", function(req, res) {
+	functions.desactivar();
+	res.redirect("/alerta");
+});
+
+app.get("/activar", function(req, res) {
+	functions.activar();
+});
 
 
+app.get("/taken", function(req, res) {
+	functions.taken();
+	console.log("Agafat");
 })
-app.get("/taken",function(err,docs){
-  functions.taken();
-  console.log("Agafat");
+
+app.get("/girar/:id", function(req, res) {
+	pillhora.girar(req.params.id);
 })
 //EXECUCIÓ HORARI CADA Hora
 var j = schedule.scheduleJob({
-  minute: 0
+	minute: 0
 }, function() {
-  functions.pillday();
-  functions.CheckSchedule();
-  })
+	functions.pillday();
+	functions.CheckSchedule();
+})
 
-  var f = schedule.scheduleJob({
-    minute: 30
-  }, function() {
-    functions.activar();
-    })
+var f = schedule.scheduleJob({
+	minute: 30
+}, function() {
+	functions.activar();
+})
 
 // var CheckSchedule = function(){
 //   var h = moment().hour() + 2;
@@ -213,12 +259,9 @@ var j = schedule.scheduleJob({
 
 //BOT telegram
 // bot.command('/girar', (ctx) => ctx.reply("Quants torns?", (ctx) => ctx.hears('hi', (ctx) => ctx.reply('Hey there'))))
-bot.command('/modern', ({ reply }) => reply('Yo'))
-bot.command('/hipster', Telegraf.reply('λ'))
-bot.command("/girar",(ctx, next) => ctx.reply("Quant",(ctx) => ctx.hearts("d",(ctx) => ctx.reply("hola"))))
 
 bot.startPolling()
 
 app.listen(80, function() {
-  console.log(" server is running");
+	console.log(" server is running");
 });
