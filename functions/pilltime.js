@@ -36,28 +36,31 @@ module.exports = {
 
 	//Funció que comprova si hi ha una alerta activada
 	CheckAlert: async function() {
-		weekschema.findOne({}, function(err, docs) {
-			if (err) {
-				functions.DBerror(err);
-			} else {
-				if (docs.alert == true) {
-					console.log("Hi ha una alerta activada, no es pot prosseguir");
-					//Es registra que ha passat una hora més de la pastilla
-					alert.findOneAndUpdate({
-						alerta: true
-					}, {
-						$inc: {
-							hours: 1
-						}
-					}, function(err, docs) {
-						console.log(docs);
-					})
-					return true;
+		return new Promise(function(resolve, reject) {
+
+			weekschema.findOne({}, function(err, docs) {
+				if (err) {
+					functions.DBerror(err);
 				} else {
-					console.log("No hi ha cap alerta!!");
-					return false;
+					if (docs.alert == true) {
+						console.log("Hi ha una alerta activada, no es pot prosseguir");
+						//Es registra que ha passat una hora més de la pastilla
+						alert.findOneAndUpdate({
+							alerta: true
+						}, {
+							$inc: {
+								hours: 1
+							}
+						}, function(err, docs) {
+							console.log(docs);
+						})
+						resolve(true);
+					} else {
+						console.log("No hi ha cap alerta!!");
+						resolve(false);
+					}
 				}
-			}
+			})
 		})
 	},
 	//Obtenció de l'hora i dia de la setmana
@@ -70,23 +73,30 @@ module.exports = {
 	},
 	//Comprovem si es hora de la pastilla
 	CheckSchedule: async function(hora) {
+		var seguir;
 		weekschema.findOne({}, function(err, docs) {
 			if (err) {
 				functions.DBerror(err);
 			} else {
 				//Comprovem si l'hora i el dia són correctes o no
+
+
+
 				docs[hora.wd].hour.forEach(function(time) {
 					if (hora.h == time) {
 						console.log("Hora de la medicació");
-						return true;
+						return seguir = true;
 					}
-
 				})
+
 			}
+			console.log(seguir);
+			return seguir;
 		})
+		return seguir;
 	},
 	//Actualitzem les hores anteriors abans de la nova, per evitar possibles problemes
-	pillupdate: function() {
+	pillupdate: async function() {
 		pillday.findOneAndUpdate({
 			edited: false
 		}, {
@@ -102,7 +112,7 @@ module.exports = {
 		})
 	},
 	//actualitzem l'event per tal que quedi guardat que s'ha pres la pastilla
-	taken: function() {
+	taken: async function() {
 		pillday.findOneAndUpdate({
 			"edited": false
 		}, {
@@ -110,7 +120,7 @@ module.exports = {
 				taken: true,
 				edited: true,
 				date2: {
-					month: moment().month(),
+					month: moment().month() + 2,
 					day: moment().date(),
 					hour: moment().hour() + 2
 				}
@@ -119,7 +129,7 @@ module.exports = {
 			console.log(docs);
 		})
 	},
-	create: function() {
+	create: async function() {
 		pillday.create({
 			date1: {
 				month: moment().month(),
@@ -132,12 +142,12 @@ module.exports = {
 		})
 	},
 	//Fa girar el disepnsador
-	girar: function(steps) {
+	girar: async function(steps) {
 		request("get", "https://dispenser.localtunnel.me/girar/'steps'");
 
 	},
 	//Es comprova si s'ha pres la pastilla
-	check: function() {
+	check: async function() {
 		pillday.findOneAndUpdate({
 			edited: false
 		}, {
@@ -145,21 +155,29 @@ module.exports = {
 				"edited": true
 			}
 		}, function(err, docs) {
-			console.log(docs);
-			if (tard) {
-				var h = moment().hour() + 2;
-				alert.create({
-					hour: h
-				}, function(err, docs) {
-					console.log(docs);
-				})
-				var alerta = true
-				callback(alerta);
-				return alerta;
+			if (docs) {
+				console.log(docs);
+				if (docs.taken == false) {
+					var h = moment().hour() + 2;
+					alert.create({
+						hour: h
+					}, function(err, docs) {
+						console.log(docs);
+					})
+					console.log("No s'ha agafat");
+
+					var alerta = true
+					return alerta;
+				} else {
+					console.log("S'ha agafat");
+				}
+			} else {
+				console.log("No s'ha trobat cap per actualitzar");
 			}
+
 		});
 	},
-	activar: function() {
+	activar: async function() {
 		pillday.findOneAndUpdate({
 			edited: false,
 			taken: false
@@ -189,7 +207,7 @@ module.exports = {
 			}
 		})
 	},
-	desactivar: function() {
+	desactivar: async function() {
 		alert.findOneAndUpdate({
 			alerta: true,
 			deactivated: false

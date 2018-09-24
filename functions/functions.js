@@ -214,6 +214,8 @@ module.exports = {
 					});
 				})
 
+			} else {
+				console.log("no s'han trobat x activar");
 			}
 		})
 	},

@@ -40,6 +40,7 @@ app.get("/horari", function(req, res) {
 	res.render("schedule.ejs");
 
 })
+
 app.post("/add/rapid", function(req, res) {
 	weekschema.remove().exec();
 
@@ -129,31 +130,26 @@ app.post("/add/schema", function(req, res) {
 
 	res.redirect("../index");
 })
-app.get("/prova", function(req, res) {
-	async function test() {
-		var hora = await pillhora.getTime();
-		console.log(hora);
-		var alerta = await pillhora.CheckAlert();
-		console.log(alerta);
-		if (!alerta) {
-			console.log("dsa");
-			var comprovar = await pillhora.CheckSchedule(hora);
-			// console.log(comprovar);
-			if (comprovar) {
-				console.log("dds");
-				pillhora.pillupdate();
-				pillhora.create();
-				// pillhora.girar(92);
-				// }
-			}
-			// functions.pillday();
-			// functions.CheckSchedule();
-			res.render("index")
+app.get("/prova", async function(req, res) {
+	var hora = await pillhora.getTime();
+	console.log(hora);
+	var alerta = await pillhora.CheckAlert();
+	console.log(alerta);
+	if (!alerta) {
+		console.log("DSdsdas");
+		var comprovar = pillhora.CheckSchedule(hora);
+		// console.log(comprovar);
+		if (comprovar) {
+			await pillhora.pillupdate();
+			await pillhora.create();
+			await pillhora.girar(92);
 		}
 	}
-	text();
+
+	res.render("index")
+
 });
-//
+
 
 app.get("/alerta", function(req, res) {
 	alert.find({}).sort({
@@ -225,8 +221,22 @@ app.get("/girar/:id", function(req, res) {
 var j = schedule.scheduleJob({
 	minute: 0
 }, function() {
-	functions.pillday();
-	functions.CheckSchedule();
+	async function test() {
+		var hora = await pillhora.getTime();
+		console.log(hora);
+		var alerta = await pillhora.CheckAlert();
+		console.log(alerta);
+		if (!alerta) {
+			var comprovar = pillhora.CheckSchedule(hora);
+			console.log(comprovar);
+			if (comprovar) {
+				await pillhora.pillupdate();
+				await pillhora.create();
+				await pillhora.girar(92);
+			}
+		}
+	}
+	test();
 })
 
 var f = schedule.scheduleJob({
