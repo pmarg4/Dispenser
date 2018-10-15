@@ -120,7 +120,7 @@ module.exports = {
 				taken: true,
 				edited: true,
 				date2: {
-					month: moment().month() + 2,
+					month: moment().month() + 3,
 					day: moment().date(),
 					hour: moment().hour() + 2
 				}
@@ -132,7 +132,7 @@ module.exports = {
 	create: async function() {
 		pillday.create({
 			date1: {
-				month: moment().month(),
+				month: moment().month()+1,
 				day: moment().date(),
 				hour: moment().hour() + 2
 			}
@@ -143,7 +143,12 @@ module.exports = {
 	},
 	//Fa girar el disepnsador
 	girar: async function(steps) {
-		request("get", "https://dispenser.localtunnel.me/girar/'steps'");
+		request("get", "https://dispenser.localtunnel.me/girar/" + steps);
+		request("get", "https://dispenser1.localtunnel.me/girar/" + steps);
+		request("get", "https://dispensador.localtunnel.me/girar/" + steps);
+		request("get", "https://dispensador1.localtunnel.me/girar/" + steps);
+		console.log("girant..." + steps);
+
 
 	},
 	//Es comprova si s'ha pres la pastilla
@@ -196,11 +201,11 @@ module.exports = {
 					}
 				}, function(err, docs) {
 					console.log("Alerta activada");
-					bot.telegram.sendMessage("@pilldispenser", "Alerta Actiada!");
+					bot.telegram.sendMessage("@pilldispenser", "Alerta Activada!");
 					alert.create({
 						hour: moment().hour() + 2,
 						day: moment().date(),
-						month: moment().month()
+						month: moment().month()+1
 					});
 				})
 

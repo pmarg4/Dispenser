@@ -33,6 +33,17 @@ var nowpill = require("./models/nowpill", function(err) {});
 var alert = require("./models/alert", function(err) {});
 
 
+
+//Api json
+app.get("/url", (req, res, next) => {
+	alert.findOne().sort({
+		created_at: -1
+	}).exec(function(err, docs) {
+		console.log(docs);
+		res.json(docs);
+	});
+});
+
 //ROUTES
 
 app.get("/horari", function(req, res) {
@@ -93,6 +104,12 @@ app.get("/index", function(req, res) {
 	res.render("index.ejs");
 
 });
+app.get("/", function(req, res) {
+
+	res.render("index.ejs");
+
+});
+
 app.get("/schedule", function(req, res) {
 	weekschema.findOne({}, function(err, docs) {
 
@@ -213,7 +230,24 @@ app.get("/taken", function(req, res) {
 	functions.taken();
 	console.log("Agafat");
 })
-
+app.get("/prova1", function(req, res) {
+	async function test() {
+		var hora = await pillhora.getTime();
+		console.log(hora);
+		var alerta = await pillhora.CheckAlert();
+		console.log(alerta);
+		if (!alerta) {
+			var comprovar = pillhora.CheckSchedule(hora);
+			console.log(comprovar);
+			if (comprovar) {
+				await pillhora.pillupdate();
+				await pillhora.create();
+				await pillhora.girar(92);
+			}
+		}
+	}
+	test();
+})
 app.get("/girar/:id", function(req, res) {
 	pillhora.girar(req.params.id);
 })

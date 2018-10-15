@@ -79,10 +79,8 @@ margin-top: 0.5em;
   padding-left: 6em;
   padding-right: 6em;
 }
-.jumbotron{
+#jumbotron{
   background-image: url(https://images.unsplash.com/photo-1518081397142-04b89e08fdfe?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=c9ff3ee03c233de37fb5586ebefeee8a&auto=format&fit=crop&w=1350&q=80);
-  background-size: cover;
-  height: 25em;
 }
 .jumboTitle{
   font-size: 4em;
